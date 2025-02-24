@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💄 Virtual Lipstick Try-On</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>💋 Virtual Lipstick Try-On</h1>
+
+        <div class="camera-container">
+            <img id="camera-feed" src="/video_feed" alt="Camera Feed">
+        </div>
+
+        <div class="shade-section">
+            <h2>✨ Select Your Matte Shade</h2>
+            <div class="shade-container" id="matte-shades"></div>
+
+            <h2>✨ Select Your Glossy Shade</h2>
+            <div class="shade-container" id="glossy-shades"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
+

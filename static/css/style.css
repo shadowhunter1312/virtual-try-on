@@ -1,0 +1,125 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+/* Heading */
+h1 {
+    font-weight: 600;
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #D10056;
+}
+
+/* Camera Section */
+.camera-container {
+    margin: 20px auto;
+    width: 480px; /* Increased size */
+    height: 500px;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.camera-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+/* Shade Selection */
+.shade-section {
+    padding: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 15px;
+}
+
+/* Shade Buttons */
+.shade-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.shade-btn {
+    width: 50px;
+    height: 25px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Matte Effect */
+.matte {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5);
+    filter: brightness(90%) contrast(110%);
+}
+
+/* Glossy Effect */
+.glossy {
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
+    position: relative;
+}
+
+/* Glossy Shine Effect */
+.glossy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.1));
+    border-radius: 15px;
+}
+
+/* Hover Effect */
+.shade-btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .shade-btn {
+        width: 40px;
+        height: 20px;
+    }
+
+    .camera-container {
+        width: 360px;
+        height: 420px;
+    }
+}
+
