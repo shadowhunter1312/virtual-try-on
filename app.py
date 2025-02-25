@@ -7,12 +7,28 @@ from flask import Flask, Response, render_template, request, jsonify
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-# Open the camera with lower latency
-camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-camera.set(cv2.CAP_PROP_FPS, 30)
-camera.set(cv2.CAP_PROP_BUFFERSIZE, 0)  # Reduces lag
+# Try different camera indexes
+def find_camera_index():
+    for i in range(5):  # Check up to 5 indexes
+        cap = cv2.VideoCapture(i)
+        if cap.isOpened():
+            print(f"✅ Camera found at index {i}")
+            cap.release()
+            return i
+        cap.release()
+    return -1
+
+camera_index = find_camera_index()
+if camera_index == -1:
+    print("❌ No camera detected. Check permissions or try a different device.")
+
+# Open camera if available
+camera = cv2.VideoCapture(camera_index) if camera_index != -1 else None
+if camera:
+    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    camera.set(cv2.CAP_PROP_FPS, 30)
+    camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Reduces lag
 
 # Mediapipe FaceMesh Model
 mp_face_mesh = mp.solutions.face_mesh
@@ -75,17 +91,18 @@ def process_frame():
     """Threaded frame processing"""
     global processed_frame
     while True:
-        success, frame = camera.read()
-        if not success:
-            continue
-        
-        frame = cv2.flip(frame, 1)
-        frame = process_makeup(frame)
-        with lock:
-            processed_frame = frame
+        if camera:
+            success, frame = camera.read()
+            if not success:
+                continue
+            frame = cv2.flip(frame, 1)
+            frame = process_makeup(frame)
+            with lock:
+                processed_frame = frame
         time.sleep(0.03)
 
-threading.Thread(target=process_frame, daemon=True).start()
+if camera:
+    threading.Thread(target=process_frame, daemon=True).start()
 
 def generate_frames():
     """Generate camera frames for video streaming"""
@@ -100,6 +117,8 @@ def generate_frames():
 
 @app.route("/video_feed")
 def video_feed():
+    if not camera:
+        return "❌ Camera not available. Please check permissions."
     return Response(generate_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 @app.route("/")
